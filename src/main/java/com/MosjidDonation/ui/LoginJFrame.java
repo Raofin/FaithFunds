@@ -4,6 +4,15 @@
  */
 package com.MosjidDonation.ui;
 
+import com.MosjidDonation.DatabaseConnection;
+import com.MosjidDonation.ui.admin.AdminDashboardJFrame;
+import com.MosjidDonation.ui.user.UserDashboardJFrame;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raofin
@@ -159,15 +168,76 @@ public class LoginJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-        
+        String emailText = email.getText();
+        String passwordText = new String(password.getPassword());
+
+        // Check if any field is empty
+        if (emailText.isEmpty() || passwordText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in both Email and Password fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Stop further execution as the fields are not valid
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            String role = (String) roleComboBox.getSelectedItem();
+            String tableName = role.equals("User") ? "Users" : (role.equals("Admin") ? "Admin" : "");
+
+            if (tableName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Invalid role selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Create a prepared statement for login validation
+            String loginQuery = "SELECT * FROM " + tableName + " WHERE Email = ? AND Password = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(loginQuery);
+            preparedStatement.setString(1, emailText);
+            preparedStatement.setString(2, passwordText);
+
+            // Execute the query and check if the user exists
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                // User exists, display success message
+                JOptionPane.showMessageDialog(null, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                setVisible(false);
+                if (role.equals("User")) {
+                    UserDashboardJFrame frame = new UserDashboardJFrame();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                } else if (role.equals("Admin")) {
+                    AdminDashboardJFrame frame = new AdminDashboardJFrame();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+            } else {
+                // User doesn't exist or invalid credentials, display error message
+                JOptionPane.showMessageDialog(null, "Invalid email or password. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // Close resources
+            resultSet.close();
+            preparedStatement.close();
+            // Since the connection is managed by the DatabaseManager, we don't need to close it here
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_loginActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+        setVisible(false);
+        LoginJFrame frame = new LoginJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void registerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerMouseReleased
-       
+        setVisible(false);
+        RegisterJFrame frame = new RegisterJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_registerMouseReleased
 
     /**

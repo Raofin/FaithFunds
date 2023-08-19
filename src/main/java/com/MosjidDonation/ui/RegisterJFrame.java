@@ -4,6 +4,14 @@
  */
 package com.MosjidDonation.ui;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raofin
@@ -25,11 +33,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        back = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         roleComboBox = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        register = new javax.swing.JButton();
         email = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -45,11 +53,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("User Registration");
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setText("Back");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        back.setText("Back");
+        back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                backActionPerformed(evt);
             }
         });
 
@@ -61,11 +69,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
         roleComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        register.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        register.setText("Register");
+        register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                registerActionPerformed(evt);
             }
         });
 
@@ -104,9 +112,9 @@ public class RegisterJFrame extends javax.swing.JFrame {
                         .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(102, 102, 102)
-                        .addComponent(jButton2)
+                        .addComponent(back)
                         .addGap(30, 30, 30)
-                        .addComponent(jButton1))
+                        .addComponent(register))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,8 +167,8 @@ public class RegisterJFrame extends javax.swing.JFrame {
                             .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)))
+                            .addComponent(register)
+                            .addComponent(back)))
                     .addComponent(jLabel1))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
@@ -168,13 +176,97 @@ public class RegisterJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        setVisible(false);
+        WelcomeJFrame frame = new WelcomeJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_backActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
+        String usernameText = username.getText();
+        String emailText = email.getText();
+        String passwordText = new String(password.getPassword());
+        String phoneText = phone.getText();
+
+        // Validate non-empty fields
+        if (usernameText.isEmpty() || emailText.isEmpty() || passwordText.isEmpty() || phoneText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Stop further execution as the fields are not valid
+        }
+
+        // Validate username length
+        if (usernameText.length() < 4) {
+            JOptionPane.showMessageDialog(null, "Username should be at least 4 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password length
+        if (passwordText.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 6 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate phone number length
+        if (phoneText.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Phone number should be at least 8 digits long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email format using a regular expression
+        String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$";
+        if (!emailText.matches(emailPattern)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Check if the email is already registered
+            String emailCheckQuery = "SELECT COUNT(*) FROM Users WHERE Email = ?";
+            PreparedStatement emailCheckStatement = connection.prepareStatement(emailCheckQuery);
+            emailCheckStatement.setString(1, emailText);
+
+            ResultSet emailCheckResult = emailCheckStatement.executeQuery();
+            emailCheckResult.next();
+
+            int emailCount = emailCheckResult.getInt(1);
+
+            emailCheckResult.close();
+            emailCheckStatement.close();
+
+            if (emailCount > 0) {
+                JOptionPane.showMessageDialog(null, "This email address is already registered.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Create a prepared statement for user registration
+            String insertQuery;
+
+            if ("User".equals(roleComboBox.getSelectedItem())) {
+                insertQuery = "INSERT INTO Users (Username, Email, Password, Phone) VALUES (?, ?, ?, ?)";
+            } else if ("Admin".equals(roleComboBox.getSelectedItem())) {
+                insertQuery = "INSERT INTO Admin (Username, Email, Password, Phone) VALUES (?, ?, ?, ?)";
+            } else {
+                // Handle an invalid role selection
+                JOptionPane.showMessageDialog(null, "Invalid role selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, usernameText);
+            preparedStatement.setString(2, emailText);
+            preparedStatement.setString(3, passwordText);
+            preparedStatement.setString(4, phoneText);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_registerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,9 +304,8 @@ public class RegisterJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton back;
     private javax.swing.JTextField email;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -224,6 +315,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField phone;
+    private javax.swing.JButton register;
     private javax.swing.JComboBox<String> roleComboBox;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
