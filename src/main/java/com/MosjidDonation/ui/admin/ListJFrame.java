@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.MosjidDonation.ui;
+package com.MosjidDonation.ui.admin;
 
 /**
  *
  * @author Raofin
  */
-public class UserListJFrame extends javax.swing.JFrame {
+public class ListJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form UserListJFrame
+     * Creates new form AdminListJFrame
      */
-    public UserListJFrame() {
+    public ListJFrame() {
         initComponents();
     }
 
@@ -26,7 +26,7 @@ public class UserListJFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        usersTable = new javax.swing.JTable();
+        adminTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
         update = new javax.swing.JButton();
         add = new javax.swing.JButton();
@@ -36,9 +36,9 @@ public class UserListJFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("User List");
+        jLabel2.setText("Admin List");
 
-        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+        adminTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -57,13 +57,7 @@ public class UserListJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(usersTable);
-        if (usersTable.getColumnModel().getColumnCount() > 0) {
-            usersTable.getColumnModel().getColumn(0).setResizable(false);
-            usersTable.getColumnModel().getColumn(1).setResizable(false);
-            usersTable.getColumnModel().getColumn(2).setResizable(false);
-            usersTable.getColumnModel().getColumn(3).setResizable(false);
-        }
+        jScrollPane1.setViewportView(adminTable);
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -114,7 +108,7 @@ public class UserListJFrame extends javax.swing.JFrame {
                         .addComponent(delete)
                         .addGap(24, 24, 24)
                         .addComponent(add)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,14 +123,14 @@ public class UserListJFrame extends javax.swing.JFrame {
                     .addComponent(update)
                     .addComponent(add)
                     .addComponent(delete))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+       
     }//GEN-LAST:event_backActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
@@ -168,31 +162,32 @@ public class UserListJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserListJFrame().setVisible(true);
+                new ListJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    private javax.swing.JTable adminTable;
     private javax.swing.JButton back;
     private javax.swing.JButton delete;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton update;
-    private javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables
 }

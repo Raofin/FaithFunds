@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.MosjidDonation.ui;
+package com.MosjidDonation.ui.admin;
 
 /**
  *
  * @author Raofin
  */
-public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
+public class DonationDistributeJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form AdminDistributeZakatJFrame
+     * Creates new form AdminDonationDistributeJFrame
      */
-    public AdminDistributeZakatJFrame() {
+    public DonationDistributeJFrame() {
         initComponents();
     }
 
@@ -26,7 +26,7 @@ public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        zakatTable = new javax.swing.JTable();
+        donationTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
         distributeSelected = new javax.swing.JButton();
         distributeAll = new javax.swing.JButton();
@@ -35,28 +35,28 @@ public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Distribute Zakat");
+        jLabel2.setText("Donation List");
 
-        zakatTable.setModel(new javax.swing.table.DefaultTableModel(
+        donationTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "User", "Amount", "Mosque", "Date", "Distributed By"
+                "User", "Category", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(zakatTable);
+        jScrollPane1.setViewportView(donationTable);
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -91,14 +91,13 @@ public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(back)
                         .addGap(29, 29, 29)
                         .addComponent(distributeSelected)
                         .addGap(28, 28, 28)
-                        .addComponent(distributeAll)
-                        .addGap(106, 106, 106)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                        .addComponent(distributeAll)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,12 +106,12 @@ public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(back)
                     .addComponent(distributeSelected)
                     .addComponent(distributeAll))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,20 +146,21 @@ public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminDistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DonationDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminDistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DonationDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminDistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DonationDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminDistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DonationDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminDistributeZakatJFrame().setVisible(true);
+                new DonationDistributeJFrame().setVisible(true);
             }
         });
     }
@@ -169,8 +169,8 @@ public class AdminDistributeZakatJFrame extends javax.swing.JFrame {
     private javax.swing.JButton back;
     private javax.swing.JButton distributeAll;
     private javax.swing.JButton distributeSelected;
+    private javax.swing.JTable donationTable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable zakatTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.MosjidDonation.ui;
+package com.MosjidDonation.ui.admin;
 
 /**
  *
  * @author Raofin
  */
-public class AdminViewZakatJFrame extends javax.swing.JFrame {
+public class DistributeZakatJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form AdminViewZakatJFrame
+     * Creates new form AdminDistributeZakatJFrame
      */
-    public AdminViewZakatJFrame() {
+    public DistributeZakatJFrame() {
         initComponents();
     }
 
@@ -28,12 +28,14 @@ public class AdminViewZakatJFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         zakatTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
+        distributeSelected = new javax.swing.JButton();
+        distributeAll = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Zakat List");
+        jLabel2.setText("Distribute Zakat");
 
         zakatTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -55,19 +57,28 @@ public class AdminViewZakatJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(zakatTable);
-        if (zakatTable.getColumnModel().getColumnCount() > 0) {
-            zakatTable.getColumnModel().getColumn(0).setResizable(false);
-            zakatTable.getColumnModel().getColumn(1).setResizable(false);
-            zakatTable.getColumnModel().getColumn(2).setResizable(false);
-            zakatTable.getColumnModel().getColumn(3).setResizable(false);
-            zakatTable.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
+            }
+        });
+
+        distributeSelected.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        distributeSelected.setText("Distribute Selected");
+        distributeSelected.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                distributeSelectedActionPerformed(evt);
+            }
+        });
+
+        distributeAll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        distributeAll.setText("Distribute All");
+        distributeAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                distributeAllActionPerformed(evt);
             }
         });
 
@@ -80,8 +91,14 @@ public class AdminViewZakatJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(back))
-                .addContainerGap(55, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(back)
+                        .addGap(29, 29, 29)
+                        .addComponent(distributeSelected)
+                        .addGap(28, 28, 28)
+                        .addComponent(distributeAll)
+                        .addGap(106, 106, 106)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,17 +107,28 @@ public class AdminViewZakatJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(back)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(back)
+                    .addComponent(distributeSelected)
+                    .addComponent(distributeAll))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+       
     }//GEN-LAST:event_backActionPerformed
+
+    private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_distributeSelectedActionPerformed
+
+    private void distributeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_distributeAllActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,26 +147,29 @@ public class AdminViewZakatJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminViewZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminViewZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminViewZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminViewZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminViewZakatJFrame().setVisible(true);
+                new DistributeZakatJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back;
+    private javax.swing.JButton distributeAll;
+    private javax.swing.JButton distributeSelected;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable zakatTable;
