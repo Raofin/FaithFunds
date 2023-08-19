@@ -4,6 +4,15 @@
  */
 package com.MosjidDonation.ui.admin;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Raofin
@@ -15,6 +24,57 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
      */
     public DonationDistributeJFrame() {
         initComponents();
+        fetchAndPopulateDonationData();
+    }
+
+    private void fetchAndPopulateDonationData() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT "
+                    + "   Donation.Id, "
+                    + "   (SELECT Username FROM Users WHERE Id = Donation.UserId) AS Username, "
+                    + "   Donation.Category, "
+                    + "   Donation.Amount, "
+                    + "   (SELECT Name FROM Mosque WHERE Id = Donation.MosqueId) AS MosqueName, "
+                    + "   Donation.Date AS DonationDate "
+                    + "FROM Donation "
+                    + "WHERE Donation.DistributionId IS NULL"
+            );
+
+            DefaultTableModel tableModel = (DefaultTableModel) donationListTable.getModel();
+            tableModel.setRowCount(0); // Clear existing data in the table
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String username = resultSet.getString("Username");
+                String category = resultSet.getString("Category");
+                double amount = resultSet.getDouble("Amount");
+                String mosqueName = resultSet.getString("MosqueName");
+                String donationDate = resultSet.getString("DonationDate");
+                String adminUsername = "-";
+
+                // Create an array of data for each row
+                Object[] rowData = {
+                    id,
+                    username,
+                    category,
+                    amount,
+                    mosqueName,
+                    donationDate,
+                    adminUsername
+                };
+
+                // Add the row to the table model
+                tableModel.addRow(rowData);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -26,7 +86,7 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        donationTable = new javax.swing.JTable();
+        donationListTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
         distributeSelected = new javax.swing.JButton();
         distributeAll = new javax.swing.JButton();
@@ -37,26 +97,33 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Donation List");
 
-        donationTable.setModel(new javax.swing.table.DefaultTableModel(
+        donationListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "User", "Category", "Amount", "Mosque", "Date", "Distributed By"
+                "Id", "User", "Category", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(donationTable);
+        jScrollPane1.setViewportView(donationListTable);
+        if (donationListTable.getColumnModel().getColumnCount() > 0) {
+            donationListTable.getColumnModel().getColumn(0).setResizable(false);
+            donationListTable.getColumnModel().getColumn(2).setResizable(false);
+            donationListTable.getColumnModel().getColumn(3).setResizable(false);
+            donationListTable.getColumnModel().getColumn(5).setResizable(false);
+            donationListTable.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -118,15 +185,111 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-       
+        setVisible(false);
+        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
-        // TODO add your handling code here:
+        int[] selectedRows = donationListTable.getSelectedRows();
+
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(null, "Please select donations to distribute.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int adminIdForDistribution = 1; // Adjust this admin ID as needed
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Prepare statement to update Donation table
+            PreparedStatement updateStatement = connection.prepareStatement(
+                    "UPDATE Donation SET DistributionId = ? WHERE Id = ?"
+            );
+
+            // Prepare statement to insert into Distribution table
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+
+            for (int selectedRow : selectedRows) {
+                int donationId = (int) donationListTable.getValueAt(selectedRow, 0);
+
+                // Update Donation table with DistributionId
+                updateStatement.setInt(1, adminIdForDistribution);
+                updateStatement.setInt(2, donationId);
+                updateStatement.addBatch();
+
+                // Insert new Distribution row
+                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+                insertStatement.setDate(1, currentDate);
+                insertStatement.setInt(2, adminIdForDistribution);
+                insertStatement.addBatch();
+
+                // Remove the row from donationListTable
+                DefaultTableModel tableModel = (DefaultTableModel) donationListTable.getModel();
+                tableModel.removeRow(selectedRow);
+            }
+
+            updateStatement.close();
+            insertStatement.close();
+
+            JOptionPane.showMessageDialog(null, "Donations distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_distributeSelectedActionPerformed
 
     private void distributeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeAllActionPerformed
-        // TODO add your handling code here:
+        int adminIdForDistribution = 1; // Adjust this admin ID as needed
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Prepare statement to update Donation table
+            PreparedStatement updateStatement = connection.prepareStatement(
+                    "UPDATE Donation SET DistributionId = ? WHERE DistributionId IS NULL"
+            );
+
+            // Prepare statement to insert into Distribution table
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+
+            DefaultTableModel tableModel = (DefaultTableModel) donationListTable.getModel();
+
+            // Iterate through all rows in donationListTable
+            for (int row = 0; row < tableModel.getRowCount(); row++) {
+                int donationId = (int) tableModel.getValueAt(row, 0);
+
+                // Update Donation table with DistributionId
+                updateStatement.setInt(1, adminIdForDistribution);
+                updateStatement.addBatch();
+
+                // Insert new Distribution row
+                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+                insertStatement.setDate(1, currentDate);
+                insertStatement.setInt(2, adminIdForDistribution);
+                insertStatement.addBatch();
+
+                // Remove the row from donationListTable
+                tableModel.removeRow(row);
+                row--; // Decrement row index after removal
+            }
+
+            updateStatement.close();
+            insertStatement.close();
+
+            JOptionPane.showMessageDialog(null, "All donations distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_distributeAllActionPerformed
 
     /**
@@ -169,7 +332,7 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
     private javax.swing.JButton back;
     private javax.swing.JButton distributeAll;
     private javax.swing.JButton distributeSelected;
-    private javax.swing.JTable donationTable;
+    private javax.swing.JTable donationListTable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

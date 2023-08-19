@@ -102,7 +102,7 @@ public class DonationViewJFrame extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "User", "Category", "Amount", "Mosque", "Date", "Distributed By"
+                "Id", "Username", "Category", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -119,7 +119,6 @@ public class DonationViewJFrame extends javax.swing.JFrame {
             donationListTable.getColumnModel().getColumn(1).setResizable(false);
             donationListTable.getColumnModel().getColumn(2).setResizable(false);
             donationListTable.getColumnModel().getColumn(3).setResizable(false);
-            donationListTable.getColumnModel().getColumn(4).setResizable(false);
             donationListTable.getColumnModel().getColumn(5).setResizable(false);
             donationListTable.getColumnModel().getColumn(6).setResizable(false);
         }
@@ -160,7 +159,10 @@ public class DonationViewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-
+        setVisible(false);
+        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     /**

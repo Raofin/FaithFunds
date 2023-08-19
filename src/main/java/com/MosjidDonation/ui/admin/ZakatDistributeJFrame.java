@@ -4,6 +4,15 @@
  */
 package com.MosjidDonation.ui.admin;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Raofin
@@ -15,6 +24,55 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
      */
     public ZakatDistributeJFrame() {
         initComponents();
+        fetchAndPopulateZakatData();
+    }
+
+    private void fetchAndPopulateZakatData() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT "
+                    + "   Zakat.Id, "
+                    + "   (SELECT Username FROM Users WHERE Id = Zakat.UserId) AS Username, "
+                    + "   Zakat.Amount, "
+                    + "   (SELECT Name FROM Mosque WHERE Id = Zakat.MosqueId) AS MosqueName, "
+                    + "   Zakat.Date AS ZakatDate, "
+                    + "   Zakat.DistributionId "
+                    + "FROM Zakat "
+                    + "WHERE Zakat.DistributionId IS NULL"
+            );
+
+            DefaultTableModel tableModel = (DefaultTableModel) zakatTable.getModel();
+            tableModel.setRowCount(0); // Clear existing data in the table
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String username = resultSet.getString("Username");
+                double amount = resultSet.getDouble("Amount");
+                String mosqueName = resultSet.getString("MosqueName");
+                String zakatDate = resultSet.getString("ZakatDate");
+                String distributedBy = "-";
+
+                // Create an array of data for each row
+                Object[] rowData = {
+                    id,
+                    username,
+                    amount,
+                    mosqueName,
+                    zakatDate,
+                    distributedBy
+                };
+
+                // Add the row to the table model
+                tableModel.addRow(rowData);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -39,17 +97,17 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
 
         zakatTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "User", "Amount", "Mosque", "Date", "Distributed By"
+                "Id", "Username", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -57,6 +115,13 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(zakatTable);
+        if (zakatTable.getColumnModel().getColumnCount() > 0) {
+            zakatTable.getColumnModel().getColumn(0).setResizable(false);
+            zakatTable.getColumnModel().getColumn(1).setResizable(false);
+            zakatTable.getColumnModel().getColumn(2).setResizable(false);
+            zakatTable.getColumnModel().getColumn(4).setResizable(false);
+            zakatTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -119,15 +184,100 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-       
+        setVisible(false);
+        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
-        // TODO add your handling code here:
+        int[] selectedRows = zakatTable.getSelectedRows();
+
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(null, "Please select zakat to distribute.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int adminIdForDistribution = 2; // Adjust this admin ID as needed
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Prepare statement to update Zakat table
+            PreparedStatement updateStatement = connection.prepareStatement(
+                    "UPDATE Zakat SET DistributionId = ? WHERE Id = ?"
+            );
+
+            // Prepare statement to insert into Distribution table
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)"
+            );
+
+            for (int selectedRow : selectedRows) {
+                int zakatId = (int) zakatTable.getValueAt(selectedRow, 0);
+
+                // Update Zakat table with DistributionId
+                updateStatement.setInt(1, adminIdForDistribution);
+                updateStatement.setInt(2, zakatId);
+                updateStatement.executeUpdate();
+
+                // Insert new Distribution row
+                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+                insertStatement.setDate(1, currentDate);
+                insertStatement.setInt(2, adminIdForDistribution);
+                insertStatement.executeUpdate();
+            }
+
+            updateStatement.close();
+            insertStatement.close();
+
+            // Refresh the table after distributing zakat
+            fetchAndPopulateZakatData();
+
+            JOptionPane.showMessageDialog(null, "Zakat distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_distributeSelectedActionPerformed
 
     private void distributeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeAllActionPerformed
-        // TODO add your handling code here:
+        int adminIdForDistribution = 1; // Adjust this admin ID as needed
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Prepare statement to update Zakat table
+            PreparedStatement updateStatement = connection.prepareStatement(
+                    "UPDATE Zakat SET DistributionId = ? WHERE DistributionId IS NULL"
+            );
+
+            // Prepare statement to insert into Distribution table
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)"
+            );
+
+            // Update all zakat records without DistributionId
+            updateStatement.setInt(1, adminIdForDistribution);
+            updateStatement.executeUpdate();
+
+            // Insert new Distribution rows for each zakat
+            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            insertStatement.setDate(1, currentDate);
+            insertStatement.setInt(2, adminIdForDistribution);
+            insertStatement.executeUpdate();
+
+            updateStatement.close();
+            insertStatement.close();
+
+            // Refresh the table after distributing zakat
+            fetchAndPopulateZakatData();
+
+            JOptionPane.showMessageDialog(null, "All zakat distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_distributeAllActionPerformed
 
     /**
