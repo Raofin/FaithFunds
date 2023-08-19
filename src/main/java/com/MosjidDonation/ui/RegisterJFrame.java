@@ -32,7 +32,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
+        registrationLabel = new javax.swing.JLabel();
         back = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -46,12 +46,13 @@ public class RegisterJFrame extends javax.swing.JFrame {
         username = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
+        clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("User Registration");
+        registrationLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        registrationLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registrationLabel.setText("User Registration");
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -68,6 +69,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
         roleComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
+        roleComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                roleComboBoxItemStateChanged(evt);
+            }
+        });
 
         register.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         register.setText("Register");
@@ -97,6 +103,14 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
         password.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
 
+        clear.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        clear.setText("Clear");
+        clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,37 +120,40 @@ public class RegisterJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
                         .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
+                        .addGap(71, 71, 71)
                         .addComponent(back)
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(clear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(register))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel8)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(59, Short.MAX_VALUE))
+                        .addGap(3, 3, 3)
+                        .addComponent(registrationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +161,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(registrationLabel)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -168,7 +185,8 @@ public class RegisterJFrame extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(register)
-                            .addComponent(back)))
+                            .addComponent(back)
+                            .addComponent(clear)))
                     .addComponent(jLabel1))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
@@ -275,6 +293,22 @@ public class RegisterJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_registerActionPerformed
 
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        username.setText("");
+        email.setText("");
+        password.setText("");
+        phone.setText("");
+    }//GEN-LAST:event_clearActionPerformed
+
+    private void roleComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roleComboBoxItemStateChanged
+        String selectedItem = (String) roleComboBox.getSelectedItem();
+        if ("User".equals(selectedItem)) {
+            registrationLabel.setText("User Registration");
+        } else if ("Admin".equals(selectedItem)) {
+            registrationLabel.setText("Admin Registration");
+        }
+    }//GEN-LAST:event_roleComboBoxItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -312,9 +346,9 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back;
+    private javax.swing.JButton clear;
     private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -323,6 +357,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField phone;
     private javax.swing.JButton register;
+    private javax.swing.JLabel registrationLabel;
     private javax.swing.JComboBox<String> roleComboBox;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables

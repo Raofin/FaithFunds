@@ -7,6 +7,7 @@ package com.MosjidDonation.ui.admin;
 import com.MosjidDonation.DatabaseConnection;
 import static com.MosjidDonation.ui.LoginJFrame.loggedInAdmin;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -118,8 +119,10 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(zakatTable);
         if (zakatTable.getColumnModel().getColumnCount() > 0) {
             zakatTable.getColumnModel().getColumn(0).setResizable(false);
+            zakatTable.getColumnModel().getColumn(0).setPreferredWidth(25);
             zakatTable.getColumnModel().getColumn(1).setResizable(false);
             zakatTable.getColumnModel().getColumn(2).setResizable(false);
+            zakatTable.getColumnModel().getColumn(3).setPreferredWidth(150);
             zakatTable.getColumnModel().getColumn(4).setResizable(false);
             zakatTable.getColumnModel().getColumn(5).setResizable(false);
         }
@@ -192,53 +195,56 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
-        int[] selectedRows = zakatTable.getSelectedRows();
+        int selectedRow = zakatTable.getSelectedRow();
 
-        if (selectedRows.length == 0) {
-            JOptionPane.showMessageDialog(null, "Please select zakat to distribute.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a row to distribute.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
+        int selectedRowId = (int) zakatTable.getValueAt(selectedRow, 0);
 
         try {
             Connection connection = DatabaseConnection.getConnection();
 
-            // Prepare statement to update Zakat table
-            PreparedStatement updateStatement = connection.prepareStatement(
-                    "UPDATE Zakat SET DistributionId = ? WHERE Id = ?"
-            );
-
             // Prepare statement to insert into Distribution table
             PreparedStatement insertStatement = connection.prepareStatement(
-                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)"
+                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
             );
 
-            for (int selectedRow : selectedRows) {
-                int zakatId = (int) zakatTable.getValueAt(selectedRow, 0);
+            // Set current date and loggedInAdmin as values for the insert statement
+            java.util.Date currentDate = new java.util.Date();
+            insertStatement.setDate(1, new Date(currentDate.getTime()));
+            insertStatement.setInt(2, loggedInAdmin);
 
-                // Update Zakat table with DistributionId
-                updateStatement.setInt(1, loggedInAdmin);
-                updateStatement.setInt(2, zakatId);
-                updateStatement.executeUpdate();
+            // Execute the insert statement
+            int rowsInserted = insertStatement.executeUpdate();
 
-                // Insert new Distribution row
-                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-                insertStatement.setDate(1, currentDate);
-                insertStatement.setInt(2, loggedInAdmin);
-                insertStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                // Retrieve the generated ID of the newly inserted distribution
+                ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int distributionId = generatedKeys.getInt(1);
+
+                    // Update Zakat table with the distributionId for the selected row
+                    PreparedStatement updateStatement = connection.prepareStatement(
+                            "UPDATE Zakat SET distributionId = ? WHERE Id = ?"
+                    );
+                    updateStatement.setInt(1, distributionId);
+                    updateStatement.setInt(2, selectedRowId);
+                    updateStatement.executeUpdate();
+                    updateStatement.close();
+
+                    JOptionPane.showMessageDialog(null, "Zakat distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
-            
-            // Execute the batch update for the update and insert statement
-            updateStatement.executeBatch();
-            insertStatement.executeBatch();
 
-            // Close the update and insert statements
-            updateStatement.close();
+            // Close the statements
             insertStatement.close();
 
             // Refresh the table after distributing zakat
             fetchAndPopulateZakatData();
-
-            JOptionPane.showMessageDialog(null, "Zakat distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -249,34 +255,43 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
         try {
             Connection connection = DatabaseConnection.getConnection();
 
-            // Prepare statement to update Zakat table
-            PreparedStatement updateStatement = connection.prepareStatement(
-                    "UPDATE Zakat SET DistributionId = ? WHERE DistributionId IS NULL"
-            );
-
             // Prepare statement to insert into Distribution table
             PreparedStatement insertStatement = connection.prepareStatement(
-                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)"
+                    "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
             );
 
-            // Update all zakat records without DistributionId
-            updateStatement.setInt(1, loggedInAdmin);
-            updateStatement.executeUpdate();
-
-            // Insert new Distribution rows for each zakat
-            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-            insertStatement.setDate(1, currentDate);
+            // Set current date and loggedInAdmin as values for the insert statement
+            java.util.Date currentDate = new java.util.Date();
+            insertStatement.setDate(1, new Date(currentDate.getTime()));
             insertStatement.setInt(2, loggedInAdmin);
-            insertStatement.executeUpdate();
 
-            // Close the update and insert statements
-            updateStatement.close();
+            // Execute the insert statement
+            int rowsInserted = insertStatement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the generated ID of the newly inserted distribution
+                ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int distributionId = generatedKeys.getInt(1);
+
+                    // Update Zakat table with the distributionId for the selected row
+                    PreparedStatement updateStatement = connection.prepareStatement(
+                            "UPDATE Zakat SET distributionId = ? WHERE DistributionId IS NULL"
+                    );
+                    updateStatement.setInt(1, distributionId);
+                    updateStatement.executeUpdate();
+                    updateStatement.close();
+
+                    JOptionPane.showMessageDialog(null, "All zakat distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+            // Close the statements
             insertStatement.close();
 
             // Refresh the table after distributing zakat
             fetchAndPopulateZakatData();
-
-            JOptionPane.showMessageDialog(null, "All zakat distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);

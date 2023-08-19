@@ -7,6 +7,7 @@ package com.MosjidDonation.ui.admin;
 import com.MosjidDonation.DatabaseConnection;
 import static com.MosjidDonation.ui.LoginJFrame.loggedInAdmin;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -120,8 +121,12 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(donationListTable);
         if (donationListTable.getColumnModel().getColumnCount() > 0) {
             donationListTable.getColumnModel().getColumn(0).setResizable(false);
+            donationListTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            donationListTable.getColumnModel().getColumn(1).setResizable(false);
             donationListTable.getColumnModel().getColumn(2).setResizable(false);
             donationListTable.getColumnModel().getColumn(3).setResizable(false);
+            donationListTable.getColumnModel().getColumn(4).setResizable(false);
+            donationListTable.getColumnModel().getColumn(4).setPreferredWidth(150);
             donationListTable.getColumnModel().getColumn(5).setResizable(false);
             donationListTable.getColumnModel().getColumn(6).setResizable(false);
         }
@@ -193,20 +198,17 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
-        int[] selectedRows = donationListTable.getSelectedRows();
+        int selectedRow = donationListTable.getSelectedRow();
 
-        if (selectedRows.length == 0) {
-            JOptionPane.showMessageDialog(null, "Please select donations to distribute.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a row to distribute.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        int selectedRowId = (int) donationListTable.getValueAt(selectedRow, 0);
+
         try {
             Connection connection = DatabaseConnection.getConnection();
-
-            // Prepare statement to update Donation table
-            PreparedStatement updateStatement = connection.prepareStatement(
-                    "UPDATE Donation SET DistributionId = ? WHERE Id = ?"
-            );
 
             // Prepare statement to insert into Distribution table
             PreparedStatement insertStatement = connection.prepareStatement(
@@ -214,34 +216,38 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            for (int selectedRow : selectedRows) {
-                int donationId = (int) donationListTable.getValueAt(selectedRow, 0);
+            // Set current date and loggedInAdmin as values for the insert statement
+            java.util.Date currentDate = new java.util.Date();
+            insertStatement.setDate(1, new Date(currentDate.getTime()));
+            insertStatement.setInt(2, loggedInAdmin);
 
-                // Update Donation table with DistributionId
-                updateStatement.setInt(1, loggedInAdmin);
-                updateStatement.setInt(2, donationId);
-                updateStatement.addBatch();
+            // Execute the insert statement
+            int rowsInserted = insertStatement.executeUpdate();
 
-                // Insert new Distribution row
-                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-                insertStatement.setDate(1, currentDate);
-                insertStatement.setInt(2, loggedInAdmin);
-                insertStatement.addBatch();
+            if (rowsInserted > 0) {
+                // Retrieve the generated ID of the newly inserted distribution
+                ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int distributionId = generatedKeys.getInt(1);
 
-                // Remove the row from donationListTable
-                DefaultTableModel tableModel = (DefaultTableModel) donationListTable.getModel();
-                tableModel.removeRow(selectedRow);
+                    // Update Zakat table with the distributionId for the selected row
+                    PreparedStatement updateStatement = connection.prepareStatement(
+                            "UPDATE Donation SET distributionId = ? WHERE Id = ?"
+                    );
+                    updateStatement.setInt(1, distributionId);
+                    updateStatement.setInt(2, selectedRowId);
+                    updateStatement.executeUpdate();
+                    updateStatement.close();
+
+                    JOptionPane.showMessageDialog(null, "Donation distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
 
-            // Execute the batch update for the update and insert statement
-            updateStatement.executeBatch();
-            insertStatement.executeBatch();
-
-            // Close the update and insert statements
-            updateStatement.close();
+            // Close the statements
             insertStatement.close();
 
-            JOptionPane.showMessageDialog(null, "Donations distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            // Refresh the table after distributing donations
+            fetchAndPopulateDonationData();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -252,47 +258,43 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
         try {
             Connection connection = DatabaseConnection.getConnection();
 
-            // Prepare statement to update Donation table
-            PreparedStatement updateStatement = connection.prepareStatement(
-                    "UPDATE Donation SET DistributionId = ? WHERE DistributionId IS NULL"
-            );
-
             // Prepare statement to insert into Distribution table
             PreparedStatement insertStatement = connection.prepareStatement(
                     "INSERT INTO Distribution (Date, DistributedBy) VALUES (?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            DefaultTableModel tableModel = (DefaultTableModel) donationListTable.getModel();
+            // Set current date and loggedInAdmin as values for the insert statement
+            java.util.Date currentDate = new java.util.Date();
+            insertStatement.setDate(1, new Date(currentDate.getTime()));
+            insertStatement.setInt(2, loggedInAdmin);
 
-            // Iterate through all rows in donationListTable
-            for (int row = 0; row < tableModel.getRowCount(); row++) {
-                int donationId = (int) tableModel.getValueAt(row, 0);
+            // Execute the insert statement
+            int rowsInserted = insertStatement.executeUpdate();
 
-                // Update Donation table with DistributionId
-                updateStatement.setInt(1, loggedInAdmin);
-                updateStatement.addBatch();
+            if (rowsInserted > 0) {
+                // Retrieve the generated ID of the newly inserted distribution
+                ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int distributionId = generatedKeys.getInt(1);
 
-                // Insert new Distribution row
-                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-                insertStatement.setDate(1, currentDate);
-                insertStatement.setInt(2, loggedInAdmin);
-                insertStatement.addBatch();
+                    // Update Zakat table with the distributionId for the selected row
+                    PreparedStatement updateStatement = connection.prepareStatement(
+                            "UPDATE Donation SET distributionId = ? WHERE DistributionId IS NULL"
+                    );
+                    updateStatement.setInt(1, distributionId);
+                    updateStatement.executeUpdate();
+                    updateStatement.close();
 
-                // Remove the row from donationListTable
-                tableModel.removeRow(row);
-                row--; // Decrement row index after removal
+                    JOptionPane.showMessageDialog(null, "All donations distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
 
-            // Execute the batch update for the update and insert statement
-            updateStatement.executeBatch();
-            insertStatement.executeBatch();
-
-            // Close the update and insert statements
-            updateStatement.close();
+            // Close the statements
             insertStatement.close();
 
-            JOptionPane.showMessageDialog(null, "All donations distributed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            // Refresh the table after distributing zakat
+            fetchAndPopulateDonationData();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);

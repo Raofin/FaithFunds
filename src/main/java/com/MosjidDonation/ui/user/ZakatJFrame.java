@@ -34,6 +34,8 @@ public class ZakatJFrame extends javax.swing.JFrame {
             ResultSet resultSet = statement.executeQuery("SELECT Name FROM Mosque");
 
             mosqueComboBox.removeAllItems(); // Clear existing items
+            
+            mosqueComboBox.addItem("Select Mosque..."); // Add mosque name to the combo box
 
             while (resultSet.next()) {
                 String mosqueName = resultSet.getString("Name");
@@ -158,8 +160,25 @@ public class ZakatJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void donateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_donateActionPerformed
-        double zakatAmount = Double.parseDouble(amount.getText()); // Get amount from the amount field
+        double zakatAmount;
         String selectedMosqueName = (String) mosqueComboBox.getSelectedItem(); // Get selected mosque name
+
+        try {
+            zakatAmount = Double.parseDouble(amount.getText()); // Get amount from the amount field
+
+            if (selectedMosqueName.equals("Select Mosque...")) {
+                JOptionPane.showMessageDialog(null, "Please select a category.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (zakatAmount <= 0) {
+                JOptionPane.showMessageDialog(null, "Please input a valid amount.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid amount input.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         try {
             Connection connection = DatabaseConnection.getConnection();

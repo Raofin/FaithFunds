@@ -114,9 +114,11 @@ public class ZakatViewJFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(zakatTable);
         if (zakatTable.getColumnModel().getColumnCount() > 0) {
             zakatTable.getColumnModel().getColumn(0).setResizable(false);
+            zakatTable.getColumnModel().getColumn(0).setPreferredWidth(25);
             zakatTable.getColumnModel().getColumn(1).setResizable(false);
             zakatTable.getColumnModel().getColumn(2).setResizable(false);
             zakatTable.getColumnModel().getColumn(3).setResizable(false);
+            zakatTable.getColumnModel().getColumn(3).setPreferredWidth(150);
             zakatTable.getColumnModel().getColumn(4).setResizable(false);
             zakatTable.getColumnModel().getColumn(5).setResizable(false);
         }

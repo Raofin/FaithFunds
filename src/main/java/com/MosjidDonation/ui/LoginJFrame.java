@@ -38,7 +38,7 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         login = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        loginLabel = new javax.swing.JLabel();
         back = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         register = new javax.swing.JLabel();
@@ -61,9 +61,9 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("User Login");
+        loginLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        loginLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loginLabel.setText("User Login");
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -97,6 +97,11 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         roleComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
+        roleComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                roleComboBoxItemStateChanged(evt);
+            }
+        });
 
         password.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
 
@@ -127,7 +132,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGap(18, 18, 18)
                             .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(back)
@@ -143,7 +148,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                 .addContainerGap(59, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addComponent(loginLabel)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,7 +214,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                     loggedInAdmin = id;
                     // ... (existing code for admin dashboard)
                 }
-                
+
                 // Display success message
                 JOptionPane.showMessageDialog(null, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -253,6 +258,15 @@ public class LoginJFrame extends javax.swing.JFrame {
         frame.setVisible(true);
     }//GEN-LAST:event_registerMouseReleased
 
+    private void roleComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roleComboBoxItemStateChanged
+        String selectedItem = (String) roleComboBox.getSelectedItem();
+        if ("User".equals(selectedItem)) {
+            loginLabel.setText("User Login");
+        } else if ("Admin".equals(selectedItem)) {
+            loginLabel.setText("Admin Login");
+        }
+    }//GEN-LAST:event_roleComboBoxItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -292,12 +306,12 @@ public class LoginJFrame extends javax.swing.JFrame {
     private javax.swing.JButton back;
     private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JButton login;
+    private javax.swing.JLabel loginLabel;
     private javax.swing.JPasswordField password;
     private javax.swing.JLabel register;
     private javax.swing.JComboBox<String> roleComboBox;

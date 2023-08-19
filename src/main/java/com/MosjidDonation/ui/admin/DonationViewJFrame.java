@@ -37,7 +37,8 @@ public class DonationViewJFrame extends javax.swing.JFrame {
                     + "   Donation.Amount, "
                     + "   (SELECT Name FROM Mosque WHERE Id = Donation.MosqueId) AS MosqueName, "
                     + "   Donation.Date AS DonationDate, "
-                    + "   (SELECT Username FROM Admin WHERE Id = Donation.DistributionId) AS AdminUsername "
+                    + "   (SELECT Username FROM Admin WHERE Id = "
+                    + "      (SELECT distributedBy FROM Distribution WHERE id = Donation.DistributionId)) AS AdminUsername "
                     + "FROM Donation "
                     + "LEFT JOIN Distribution ON Donation.DistributionId = Distribution.Id"
             );
@@ -116,9 +117,11 @@ public class DonationViewJFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(donationListTable);
         if (donationListTable.getColumnModel().getColumnCount() > 0) {
             donationListTable.getColumnModel().getColumn(0).setResizable(false);
+            donationListTable.getColumnModel().getColumn(0).setPreferredWidth(25);
             donationListTable.getColumnModel().getColumn(1).setResizable(false);
             donationListTable.getColumnModel().getColumn(2).setResizable(false);
             donationListTable.getColumnModel().getColumn(3).setResizable(false);
+            donationListTable.getColumnModel().getColumn(4).setPreferredWidth(150);
             donationListTable.getColumnModel().getColumn(5).setResizable(false);
             donationListTable.getColumnModel().getColumn(6).setResizable(false);
         }
