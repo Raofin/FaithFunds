@@ -34,6 +34,7 @@ public class WelcomeJFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mosjid Donation");
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat.png")); // NOI18N
 
@@ -54,6 +55,7 @@ public class WelcomeJFrame extends javax.swing.JFrame {
 
         getStarted.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         getStarted.setText("Get Started");
+        getStarted.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         getStarted.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getStartedActionPerformed(evt);

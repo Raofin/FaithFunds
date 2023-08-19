@@ -49,6 +49,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
         clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mosjid Donation");
 
         registrationLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         registrationLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -56,6 +57,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
+        back.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
@@ -69,6 +71,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
         roleComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
+        roleComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         roleComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 roleComboBoxItemStateChanged(evt);
@@ -77,6 +80,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
         register.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         register.setText("Register");
+        register.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerActionPerformed(evt);
@@ -105,6 +109,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
         clear.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         clear.setText("Clear");
+        clear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearActionPerformed(evt);

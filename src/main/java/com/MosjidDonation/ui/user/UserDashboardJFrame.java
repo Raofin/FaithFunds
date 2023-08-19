@@ -36,6 +36,7 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mosjid Donation");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -43,32 +44,36 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat2.png")); // NOI18N
 
-        donations.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        donations.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         donations.setText("Donations");
+        donations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         donations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 donationsActionPerformed(evt);
             }
         });
 
-        zakat.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        zakat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         zakat.setText("Zakat");
+        zakat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         zakat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zakatActionPerformed(evt);
             }
         });
 
-        myProfile.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        myProfile.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         myProfile.setText("My Profile");
+        myProfile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         myProfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 myProfileActionPerformed(evt);
             }
         });
 
-        logout.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        logout.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         logout.setText("Logout");
+        logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutActionPerformed(evt);
@@ -84,7 +89,7 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel1)
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,12 +107,12 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
                         .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(myProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
@@ -123,7 +128,7 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(myProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(36, 36, 36))
+                .addGap(40, 40, 40))
         );
 
         pack();

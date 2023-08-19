@@ -41,6 +41,7 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mosjid Donation");
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat3.png")); // NOI18N
 
@@ -48,16 +49,18 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Admin Dashboard");
 
-        viewDonations.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        viewDonations.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         viewDonations.setText("Donations");
+        viewDonations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         viewDonations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewDonationsActionPerformed(evt);
             }
         });
 
-        viewZakat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        viewZakat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         viewZakat.setText("Zakat");
+        viewZakat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         viewZakat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewZakatActionPerformed(evt);
@@ -66,6 +69,7 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
 
         logout.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         logout.setText("Logout");
+        logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutActionPerformed(evt);
@@ -75,16 +79,18 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel7.setText("View");
 
-        distributeDonations.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        distributeDonations.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         distributeDonations.setText("Donations");
+        distributeDonations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         distributeDonations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 distributeDonationsActionPerformed(evt);
             }
         });
 
-        distributeZakat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        distributeZakat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         distributeZakat.setText("Zakat");
+        distributeZakat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         distributeZakat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 distributeZakatActionPerformed(evt);
@@ -94,16 +100,18 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel8.setText("Distribute");
 
-        manageAdmins.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        manageAdmins.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         manageAdmins.setText("Admins");
+        manageAdmins.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         manageAdmins.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 manageAdminsActionPerformed(evt);
             }
         });
 
-        manageUsers.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        manageUsers.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         manageUsers.setText("Users");
+        manageUsers.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         manageUsers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 manageUsersActionPerformed(evt);
@@ -118,39 +126,33 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel7))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(distributeZakat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(distributeDonations))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(viewZakat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(viewDonations))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel9)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                     .addComponent(manageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(manageAdmins, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(distributeZakat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(viewZakat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(manageAdmins, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(distributeDonations)
+                                    .addComponent(viewDonations)))
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 54, Short.MAX_VALUE))
+                        .addContainerGap(57, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(160, 160, 160))))
+                        .addGap(152, 152, 152))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,9 +167,9 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(viewZakat)
-                                    .addComponent(viewDonations))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(viewDonations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(viewZakat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(distributeZakat)
@@ -176,12 +178,12 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(manageUsers)
                             .addComponent(jLabel9)
-                            .addComponent(manageAdmins))
-                        .addGap(18, 18, 18)
+                            .addComponent(manageAdmins)
+                            .addComponent(manageUsers))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(logout)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
