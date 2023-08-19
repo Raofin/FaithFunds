@@ -216,7 +216,6 @@ public class UserListJFrame extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }//GEN-LAST:event_deleteActionPerformed
 
     /**

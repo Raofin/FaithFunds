@@ -233,6 +233,11 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
                 tableModel.removeRow(selectedRow);
             }
 
+            // Execute the batch update for the update and insert statement
+            updateStatement.executeBatch();
+            insertStatement.executeBatch();
+
+            // Close the update and insert statements
             updateStatement.close();
             insertStatement.close();
 
@@ -279,6 +284,11 @@ public class DonationDistributeJFrame extends javax.swing.JFrame {
                 row--; // Decrement row index after removal
             }
 
+            // Execute the batch update for the update and insert statement
+            updateStatement.executeBatch();
+            insertStatement.executeBatch();
+
+            // Close the update and insert statements
             updateStatement.close();
             insertStatement.close();
 

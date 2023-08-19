@@ -211,7 +211,7 @@ public class UpdateAdminJFrame extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
-        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        UserListJFrame frame = new UserListJFrame();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed

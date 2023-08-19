@@ -178,7 +178,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
-        WelcomeJFrame frame = new WelcomeJFrame();
+        LoginJFrame frame = new LoginJFrame();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed

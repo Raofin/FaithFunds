@@ -226,7 +226,12 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
                 insertStatement.setInt(2, loggedInAdmin);
                 insertStatement.executeUpdate();
             }
+            
+            // Execute the batch update for the update and insert statement
+            updateStatement.executeBatch();
+            insertStatement.executeBatch();
 
+            // Close the update and insert statements
             updateStatement.close();
             insertStatement.close();
 
@@ -264,6 +269,7 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
             insertStatement.setInt(2, loggedInAdmin);
             insertStatement.executeUpdate();
 
+            // Close the update and insert statements
             updateStatement.close();
             insertStatement.close();
 

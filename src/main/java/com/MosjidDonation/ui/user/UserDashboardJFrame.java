@@ -4,6 +4,9 @@
  */
 package com.MosjidDonation.ui.user;
 
+import com.MosjidDonation.ui.LoginJFrame;
+import static com.MosjidDonation.ui.LoginJFrame.loggedInUser;
+
 /**
  *
  * @author Raofin
@@ -65,6 +68,11 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
 
         logout.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         logout.setText("Logout");
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,6 +134,14 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }//GEN-LAST:event_myProfileActionPerformed
+
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+        loggedInUser = -1;
+        setVisible(false);
+        LoginJFrame frame = new LoginJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_logoutActionPerformed
 
     /**
      * @param args the command line arguments

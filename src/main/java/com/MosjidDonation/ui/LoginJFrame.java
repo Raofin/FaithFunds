@@ -241,7 +241,7 @@ public class LoginJFrame extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
-        LoginJFrame frame = new LoginJFrame();
+        WelcomeJFrame frame = new WelcomeJFrame();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed

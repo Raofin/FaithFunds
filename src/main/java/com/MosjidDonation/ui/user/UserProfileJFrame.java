@@ -23,6 +23,7 @@ public class UserProfileJFrame extends javax.swing.JFrame {
      */
     public UserProfileJFrame() {
         initComponents();
+        fetchAndPopulateData();
     }
     
     private void fetchAndPopulateData() {
