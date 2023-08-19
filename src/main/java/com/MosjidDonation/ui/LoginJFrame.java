@@ -19,6 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class LoginJFrame extends javax.swing.JFrame {
 
+    public static int loggedInAdmin = -1; // Default value to indicate no admin logged in
+    public static int loggedInUser = -1; // Default value to indicate no user logged in
+
     /**
      * Creates new form LoginJFrame
      */
@@ -197,7 +200,17 @@ public class LoginJFrame extends javax.swing.JFrame {
             // Execute the query and check if the user exists
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                // User exists, display success message
+                int id = resultSet.getInt("Id"); // Assuming the ID column name is "Id"
+
+                if (role.equals("User")) {
+                    loggedInUser = id;
+                    // ... (existing code for user dashboard)
+                } else if (role.equals("Admin")) {
+                    loggedInAdmin = id;
+                    // ... (existing code for admin dashboard)
+                }
+                
+                // Display success message
                 JOptionPane.showMessageDialog(null, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 setVisible(false);

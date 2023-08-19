@@ -141,12 +141,13 @@
           <Font name="Segoe UI" size="17" style="0"/>
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="Quran"/>
-            <StringItem index="1" value="Jaynamaz"/>
-            <StringItem index="2" value="Dress"/>
-            <StringItem index="3" value="Food"/>
-            <StringItem index="4" value="Money"/>
+          <StringArray count="6">
+            <StringItem index="0" value="Select Category..."/>
+            <StringItem index="1" value="Quran"/>
+            <StringItem index="2" value="Jaynamaz"/>
+            <StringItem index="3" value="Dress"/>
+            <StringItem index="4" value="Food"/>
+            <StringItem index="5" value="Money"/>
           </StringArray>
         </Property>
       </Properties>
@@ -168,7 +169,9 @@
           <Font name="Segoe UI" size="17" style="0"/>
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
+          <StringArray count="1">
+            <StringItem index="0" value="Select Category..."/>
+          </StringArray>
         </Property>
       </Properties>
       <AuxValues>

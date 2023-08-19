@@ -4,6 +4,14 @@
  */
 package com.MosjidDonation.ui.user;
 
+import com.MosjidDonation.DatabaseConnection;
+import static com.MosjidDonation.ui.LoginJFrame.loggedInUser;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raofin
@@ -15,6 +23,33 @@ public class UserProfileJFrame extends javax.swing.JFrame {
      */
     public UserProfileJFrame() {
         initComponents();
+    }
+    
+    private void fetchAndPopulateData() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users WHERE Id = ?");
+            preparedStatement.setInt(1, loggedInUser);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String usernameText = resultSet.getString("Username");
+                String emailText = resultSet.getString("Email");
+                String passwordText = resultSet.getString("Password");
+                String phoneText = resultSet.getString("Phone");
+
+                // Update the text fields with the fetched data
+                username.setText(usernameText);
+                email.setText(emailText);
+                password.setText(passwordText);
+                phone.setText(phoneText);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -168,15 +203,74 @@ public class UserProfileJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+        setVisible(false);
+        UserDashboardJFrame frame = new UserDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        
+        String newUsername = username.getText();
+        String newEmail = email.getText();
+        String newPassword = new String(password.getPassword());
+        String newPhone = phone.getText();
+
+        // Validate username length
+        if (newEmail.length() < 4) {
+            JOptionPane.showMessageDialog(null, "Username should be at least 4 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password length
+        if (newPassword.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 6 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate phone number length
+        if (newPhone.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Phone number should be at least 8 digits long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email format using a regular expression
+        String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$";
+        if (!newEmail.matches(emailPattern)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE Users SET Username = ?, Email = ?, Password = ?, Phone = ? WHERE Id = ?"
+            );
+            preparedStatement.setString(1, newUsername);
+            preparedStatement.setString(2, newEmail);
+            preparedStatement.setString(3, newPassword);
+            preparedStatement.setString(4, newPhone);
+            preparedStatement.setInt(5, loggedInUser);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "User information updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to update user information.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "An error occurred. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_updateActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
-        // TODO add your handling code here:
+        username.setText("");
+        email.setText("");
+        password.setText("");
+        phone.setText("");
     }//GEN-LAST:event_clearActionPerformed
 
     /**

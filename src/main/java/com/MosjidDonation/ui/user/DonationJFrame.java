@@ -4,6 +4,15 @@
  */
 package com.MosjidDonation.ui.user;
 
+import com.MosjidDonation.DatabaseConnection;
+import static com.MosjidDonation.ui.LoginJFrame.loggedInUser;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raofin
@@ -15,6 +24,28 @@ public class DonationJFrame extends javax.swing.JFrame {
      */
     public DonationJFrame() {
         initComponents();
+        populateMosqueComboBox();
+    }
+
+    private void populateMosqueComboBox() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT Name FROM Mosque");
+
+            mosqueComboBox.removeAllItems(); // Clear existing items
+            mosqueComboBox.addItem("Select Mosque...");
+
+            while (resultSet.next()) {
+                String mosqueName = resultSet.getString("Name");
+                mosqueComboBox.addItem(mosqueName); // Add mosque name to the combo box
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -52,12 +83,13 @@ public class DonationJFrame extends javax.swing.JFrame {
         jLabel6.setText("Category");
 
         categoryComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quran", "Jaynamaz", "Dress", "Food", "Money" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Category...", "Quran", "Jaynamaz", "Dress", "Food", "Money" }));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Mosque");
 
         mosqueComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        mosqueComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Category..." }));
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -138,11 +170,87 @@ public class DonationJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+        setVisible(false);
+        UserDashboardJFrame frame = new UserDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void donateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_donateActionPerformed
-        
+        double donationAmount;
+        String selectedCategory;
+        String selectedMosqueName;
+
+        // Validate the input fields
+        try {
+            donationAmount = Double.parseDouble(amount.getText());
+            selectedCategory = (String) categoryComboBox.getSelectedItem();
+            selectedMosqueName = (String) mosqueComboBox.getSelectedItem();
+
+            if (selectedMosqueName.equals("Select Mosque...")) {
+                JOptionPane.showMessageDialog(null, "Please select a mosque.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if (selectedCategory.equals("Select Category...")) {
+                JOptionPane.showMessageDialog(null, "Please select a category.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if (donationAmount <= 0) {
+                JOptionPane.showMessageDialog(null, "Please input a valid amount.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid amount input.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Get the mosque ID using the selected mosque name
+            String mosqueIdQuery = "SELECT Id FROM Mosque WHERE Name = ?";
+            PreparedStatement mosqueIdStatement = connection.prepareStatement(mosqueIdQuery);
+            mosqueIdStatement.setString(1, selectedMosqueName);
+            ResultSet mosqueIdResult = mosqueIdStatement.executeQuery();
+
+            int mosqueId = -1; // Default value
+            if (mosqueIdResult.next()) {
+                mosqueId = mosqueIdResult.getInt("Id");
+            }
+
+            mosqueIdResult.close();
+            mosqueIdStatement.close();
+
+            if (mosqueId == -1) {
+                JOptionPane.showMessageDialog(null, "Invalid mosque selection.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Insert new donation
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO Donation (Amount, Category, Date, MosqueId, UserId, DistributionId) VALUES (?, ?, ?, ?, ?, NULL)"
+            );
+
+            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            insertStatement.setDouble(1, donationAmount);
+            insertStatement.setString(2, selectedCategory);
+            insertStatement.setDate(3, currentDate);
+            insertStatement.setInt(4, mosqueId);
+            insertStatement.setInt(5, loggedInUser);
+            insertStatement.executeUpdate();
+
+            insertStatement.close();
+
+            JOptionPane.showMessageDialog(null, "Donation added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear the amount field after donation
+            amount.setText("");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_donateActionPerformed
 
     /**

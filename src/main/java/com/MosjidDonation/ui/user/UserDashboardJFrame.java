@@ -35,12 +35,17 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Welcome User to Mosjid Donation!");
+        jLabel2.setText("Welcome to Mosjid Donation!");
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat2.png")); // NOI18N
 
         donations.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
         donations.setText("Donations");
+        donations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                donationsActionPerformed(evt);
+            }
+        });
 
         zakat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
         zakat.setText("Zakat");
@@ -52,6 +57,11 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
 
         myProfile.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
         myProfile.setText("My Profile");
+        myProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myProfileActionPerformed(evt);
+            }
+        });
 
         logout.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         logout.setText("Logout");
@@ -97,8 +107,25 @@ public class UserDashboardJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void zakatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zakatActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        ZakatJFrame frame = new ZakatJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_zakatActionPerformed
+
+    private void donationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_donationsActionPerformed
+        setVisible(false);
+        DonationJFrame frame = new DonationJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_donationsActionPerformed
+
+    private void myProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myProfileActionPerformed
+        setVisible(false);
+        UserProfileJFrame frame = new UserProfileJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_myProfileActionPerformed
 
     /**
      * @param args the command line arguments

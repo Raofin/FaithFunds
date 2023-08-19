@@ -4,6 +4,15 @@
  */
 package com.MosjidDonation.ui.user;
 
+import com.MosjidDonation.DatabaseConnection;
+import static com.MosjidDonation.ui.LoginJFrame.loggedInUser;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raofin
@@ -15,6 +24,27 @@ public class ZakatJFrame extends javax.swing.JFrame {
      */
     public ZakatJFrame() {
         initComponents();
+        populateMosqueComboBox();
+    }
+
+    private void populateMosqueComboBox() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT Name FROM Mosque");
+
+            mosqueComboBox.removeAllItems(); // Clear existing items
+
+            while (resultSet.next()) {
+                String mosqueName = resultSet.getString("Name");
+                mosqueComboBox.addItem(mosqueName); // Add mosque name to the combo box
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -121,11 +151,61 @@ public class ZakatJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+        setVisible(false);
+        UserDashboardJFrame frame = new UserDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void donateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_donateActionPerformed
-        
+        double zakatAmount = Double.parseDouble(amount.getText()); // Get amount from the amount field
+        String selectedMosqueName = (String) mosqueComboBox.getSelectedItem(); // Get selected mosque name
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Get the mosque ID using the selected mosque name
+            String mosqueIdQuery = "SELECT Id FROM Mosque WHERE Name = ?";
+            PreparedStatement mosqueIdStatement = connection.prepareStatement(mosqueIdQuery);
+            mosqueIdStatement.setString(1, selectedMosqueName);
+            ResultSet mosqueIdResult = mosqueIdStatement.executeQuery();
+
+            int mosqueId = -1; // Default value
+            if (mosqueIdResult.next()) {
+                mosqueId = mosqueIdResult.getInt("Id");
+            }
+
+            mosqueIdResult.close();
+            mosqueIdStatement.close();
+
+            if (mosqueId == -1) {
+                JOptionPane.showMessageDialog(null, "Invalid mosque selection.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Insert new zakat donation
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO Zakat (Amount, Date, MosqueId, UserId, DistributionId) VALUES (?, ?, ?, ?, NULL)"
+            );
+
+            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            insertStatement.setDouble(1, zakatAmount);
+            insertStatement.setDate(2, currentDate);
+            insertStatement.setInt(3, mosqueId);
+            insertStatement.setInt(4, loggedInUser);
+            insertStatement.executeUpdate();
+
+            insertStatement.close();
+
+            JOptionPane.showMessageDialog(null, "Zakat donated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear the amount field after donation
+            amount.setText("");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_donateActionPerformed
 
     /**
