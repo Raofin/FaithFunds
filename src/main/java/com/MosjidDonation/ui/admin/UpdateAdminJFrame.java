@@ -222,8 +222,28 @@ public class UpdateAdminJFrame extends javax.swing.JFrame {
         String newPassword = new String(password.getPassword());
         String newPhone = phone.getText();
 
-        if (newUsername.isEmpty() || newEmail.isEmpty() || newPassword.isEmpty() || newPhone.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+        // Validate username length
+        if (newEmail.length() < 4) {
+            JOptionPane.showMessageDialog(null, "Username should be at least 4 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password length
+        if (newPassword.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 6 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate phone number length
+        if (newPhone.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Phone number should be at least 8 digits long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email format using a regular expression
+        String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$";
+        if (!newEmail.matches(emailPattern)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

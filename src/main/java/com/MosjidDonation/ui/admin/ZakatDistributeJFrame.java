@@ -5,6 +5,7 @@
 package com.MosjidDonation.ui.admin;
 
 import com.MosjidDonation.DatabaseConnection;
+import static com.MosjidDonation.ui.LoginJFrame.loggedInAdmin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -198,8 +199,6 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
             return;
         }
 
-        int adminIdForDistribution = 2; // Adjust this admin ID as needed
-
         try {
             Connection connection = DatabaseConnection.getConnection();
 
@@ -217,14 +216,14 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
                 int zakatId = (int) zakatTable.getValueAt(selectedRow, 0);
 
                 // Update Zakat table with DistributionId
-                updateStatement.setInt(1, adminIdForDistribution);
+                updateStatement.setInt(1, loggedInAdmin);
                 updateStatement.setInt(2, zakatId);
                 updateStatement.executeUpdate();
 
                 // Insert new Distribution row
                 java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
                 insertStatement.setDate(1, currentDate);
-                insertStatement.setInt(2, adminIdForDistribution);
+                insertStatement.setInt(2, loggedInAdmin);
                 insertStatement.executeUpdate();
             }
 
@@ -242,8 +241,6 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_distributeSelectedActionPerformed
 
     private void distributeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeAllActionPerformed
-        int adminIdForDistribution = 1; // Adjust this admin ID as needed
-
         try {
             Connection connection = DatabaseConnection.getConnection();
 
@@ -258,13 +255,13 @@ public class ZakatDistributeJFrame extends javax.swing.JFrame {
             );
 
             // Update all zakat records without DistributionId
-            updateStatement.setInt(1, adminIdForDistribution);
+            updateStatement.setInt(1, loggedInAdmin);
             updateStatement.executeUpdate();
 
             // Insert new Distribution rows for each zakat
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
             insertStatement.setDate(1, currentDate);
-            insertStatement.setInt(2, adminIdForDistribution);
+            insertStatement.setInt(2, loggedInAdmin);
             insertStatement.executeUpdate();
 
             updateStatement.close();
