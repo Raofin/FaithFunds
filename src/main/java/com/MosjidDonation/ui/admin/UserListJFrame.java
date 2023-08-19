@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -185,6 +186,12 @@ public class UserListJFrame extends javax.swing.JFrame {
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
         int selectedRow = usersTable.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No Row Selected", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         int idToUpdate = (int) usersTable.getValueAt(selectedRow, 0);
 
         setVisible(false);
@@ -202,6 +209,12 @@ public class UserListJFrame extends javax.swing.JFrame {
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         int selectedRow = usersTable.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Row Selected", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         int idToDelete = (int) usersTable.getValueAt(selectedRow, 0);
 
         try {
