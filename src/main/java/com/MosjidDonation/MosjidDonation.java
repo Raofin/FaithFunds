@@ -5,6 +5,10 @@
 package com.MosjidDonation;
 
 import com.MosjidDonation.ui.WelcomeJFrame;
+import javax.swing.UIManager;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,17 +17,12 @@ import com.MosjidDonation.ui.WelcomeJFrame;
 public class MosjidDonation {
 
     public static void main(String[] args) {
-        // Set the look and feel of the GUI to match the Windows style
+        // Set the look and feel of the GUI to FlatLaf
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(new FlatMacDarkLaf()); // Use FlatDarkLaf or other FlatLaf themes
+        } catch (Exception ex) {
             // If there's an error in setting the look and feel, log the error
-            java.util.logging.Logger.getLogger(WelcomeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(WelcomeJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         // Start the GUI in the Event Dispatch Thread
