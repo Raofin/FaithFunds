@@ -92,25 +92,27 @@ VALUES
 
 -- Add foreign key constraints
 
+-- Zakat.UserId references Users.Id
+ALTER TABLE Zakat
+ADD CONSTRAINT FK_Zakat_UserId FOREIGN KEY (UserId) REFERENCES Users(Id)
+ON DELETE CASCADE;
+
 -- Zakat.MosqueId references Mosque.Id
 ALTER TABLE Zakat
 ADD CONSTRAINT FK_Zakat_MosqueId FOREIGN KEY (MosqueId) REFERENCES Mosque(Id);
-
--- Zakat.UserId references Users.Id
-ALTER TABLE Zakat
-ADD CONSTRAINT FK_Zakat_UserId FOREIGN KEY (UserId) REFERENCES Users(Id);
 
 -- Zakat.DistributionId references Distribution.Id
 ALTER TABLE Zakat
 ADD CONSTRAINT FK_Zakat_DistributionId FOREIGN KEY (DistributionId) REFERENCES Distribution(Id);
 
+-- Donation.UserId references Users.Id
+ALTER TABLE Donation
+ADD CONSTRAINT FK_Donation_UserId FOREIGN KEY (UserId) REFERENCES Users(Id)
+ON DELETE CASCADE;
+
 -- Donation.MosqueId references Mosque.Id
 ALTER TABLE Donation
 ADD CONSTRAINT FK_Donation_MosqueId FOREIGN KEY (MosqueId) REFERENCES Mosque(Id);
-
--- Donation.UserId references Users.Id
-ALTER TABLE Donation
-ADD CONSTRAINT FK_Donation_UserId FOREIGN KEY (UserId) REFERENCES Users(Id);
 
 -- Donation.DistributionId references Distribution.Id
 ALTER TABLE Donation
@@ -118,4 +120,5 @@ ADD CONSTRAINT FK_Donation_DistributionId FOREIGN KEY (DistributionId) REFERENCE
 
 -- Distribution.DistributedBy references Admin.Id
 ALTER TABLE Distribution
-ADD CONSTRAINT FK_Distribution_DistributedBy FOREIGN KEY (DistributedBy) REFERENCES Admin(Id);
+ADD CONSTRAINT FK_Distribution_DistributedBy FOREIGN KEY (DistributedBy) REFERENCES Admin(Id)
+ON DELETE CASCADE;
