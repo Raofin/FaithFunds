@@ -4,6 +4,14 @@
  */
 package com.MosjidDonation.ui.admin;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raofin
@@ -168,15 +176,99 @@ public class AddUserJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
-        // TODO add your handling code here:
+        username.setText("");
+        email.setText("");
+        password.setText("");
+        phone.setText("");
     }//GEN-LAST:event_clearActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+        setVisible(false);
+        UserListJFrame frame = new UserListJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-     
+        String usernameText = username.getText();
+        String emailText = email.getText();
+        String passwordText = new String(password.getPassword());
+        String phoneText = phone.getText();
+
+        // Validate non-empty fields
+        if (usernameText.isEmpty() || emailText.isEmpty() || passwordText.isEmpty() || phoneText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Stop further execution as the fields are not valid
+        }
+
+        // Validate username length
+        if (usernameText.length() < 4) {
+            JOptionPane.showMessageDialog(null, "Username should be at least 4 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password length
+        if (passwordText.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 6 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate phone number length
+        if (phoneText.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Phone number should be at least 8 digits long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email format using a regular expression
+        String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$";
+        if (!emailText.matches(emailPattern)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Check if the email is already registered
+            String emailCheckQuery = "SELECT COUNT(*) FROM Users WHERE Email = ?";
+            PreparedStatement emailCheckStatement = connection.prepareStatement(emailCheckQuery);
+            emailCheckStatement.setString(1, emailText);
+
+            ResultSet emailCheckResult = emailCheckStatement.executeQuery();
+            emailCheckResult.next();
+
+            int emailCount = emailCheckResult.getInt(1);
+
+            emailCheckResult.close();
+            emailCheckStatement.close();
+
+            if (emailCount > 0) {
+                JOptionPane.showMessageDialog(null, "This email address is already registered.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Create a prepared statement for user registration
+            String insertQuery = "INSERT INTO Users (Username, Email, Password, Phone) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, usernameText);
+            preparedStatement.setString(2, emailText);
+            preparedStatement.setString(3, passwordText);
+            preparedStatement.setString(4, phoneText);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            // Registration successful, show message and clear input fields
+            JOptionPane.showMessageDialog(null, "New user added.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            username.setText("");
+            email.setText("");
+            password.setText("");
+            phone.setText("");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_addActionPerformed
 
     /**

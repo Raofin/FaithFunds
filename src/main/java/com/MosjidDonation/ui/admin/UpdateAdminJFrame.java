@@ -15,28 +15,28 @@ import javax.swing.JOptionPane;
  *
  * @author Raofin
  */
-public class UpdateUserJFrame extends javax.swing.JFrame {
+public class UpdateAdminJFrame extends javax.swing.JFrame {
 
-    private int userId;
+    private int adminId;
 
     /**
-     * Creates new form UpdateUserJFrame
+     * Creates new form UpdateAdminJFrame
      */
-    public UpdateUserJFrame() {
+    public UpdateAdminJFrame() {
         initComponents();
     }
 
-    public UpdateUserJFrame(int id) {
+    public UpdateAdminJFrame(int id) {
         initComponents();
         fetchAndPopulateData(id);
-        userId = id;
+        adminId = id;
     }
 
-    private void fetchAndPopulateData(int userId) {
+    private void fetchAndPopulateData(int adminId) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users WHERE Id = ?");
-            preparedStatement.setInt(1, userId);
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Admin WHERE Id = ?");
+            preparedStatement.setInt(1, adminId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -66,39 +66,21 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        clear = new javax.swing.JButton();
-        phone = new javax.swing.JTextField();
-        password = new javax.swing.JPasswordField();
-        jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         back = new javax.swing.JButton();
         username = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         email = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         update = new javax.swing.JButton();
+        clear = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        phone = new javax.swing.JTextField();
+        password = new javax.swing.JPasswordField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat3.png")); // NOI18N
-
-        clear.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        clear.setText("Clear");
-        clear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearActionPerformed(evt);
-            }
-        });
-
-        phone.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-
-        password.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Update User");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Phone");
@@ -121,6 +103,8 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Email");
 
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat3.png")); // NOI18N
+
         update.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         update.setText("Update");
         update.addActionListener(new java.awt.event.ActionListener() {
@@ -129,15 +113,31 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
             }
         });
 
+        clear.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        clear.setText("Clear");
+        clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearActionPerformed(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Password");
+
+        phone.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+
+        password.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Update Admin");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,18 +203,11 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addComponent(jLabel1)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
-        username.setText("");
-        email.setText("");
-        password.setText("");
-        phone.setText("");
-    }//GEN-LAST:event_clearActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
@@ -237,13 +230,13 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
         try {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE Users SET Username = ?, Email = ?, Password = ?, Phone = ? WHERE Id = ?"
+                    "UPDATE Admin SET Username = ?, Email = ?, Password = ?, Phone = ? WHERE Id = ?"
             );
             preparedStatement.setString(1, newUsername);
             preparedStatement.setString(2, newEmail);
             preparedStatement.setString(3, newPassword);
             preparedStatement.setString(4, newPhone);
-            preparedStatement.setInt(5, userId);
+            preparedStatement.setInt(5, adminId);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -259,6 +252,13 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "An error occurred. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_updateActionPerformed
+
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        username.setText("");
+        email.setText("");
+        password.setText("");
+        phone.setText("");
+    }//GEN-LAST:event_clearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,23 +277,20 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UpdateUserJFrame().setVisible(true);
+                new UpdateAdminJFrame().setVisible(true);
             }
         });
     }

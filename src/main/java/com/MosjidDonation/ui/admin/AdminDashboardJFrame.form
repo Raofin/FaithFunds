@@ -137,6 +137,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Donations"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewDonationsActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="viewZakat">
       <Properties>
@@ -172,6 +175,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Donations"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="distributeDonationsActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="distributeZakat">
       <Properties>
@@ -199,6 +205,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Admins"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manageAdminsActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="manageUsers">
       <Properties>

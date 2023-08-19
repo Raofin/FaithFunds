@@ -4,6 +4,14 @@
  */
 package com.MosjidDonation.ui.admin;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Raofin
@@ -15,6 +23,37 @@ public class UserListJFrame extends javax.swing.JFrame {
      */
     public UserListJFrame() {
         initComponents();
+        fetchAndPopulateData();
+    }
+
+    private void fetchAndPopulateData() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Users");
+
+            DefaultTableModel tableModel = (DefaultTableModel) usersTable.getModel();
+            tableModel.setRowCount(0); // Clear existing data in the table
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String username = resultSet.getString("Username");
+                String email = resultSet.getString("Email");
+                String password = resultSet.getString("Password");
+                String phone = resultSet.getString("Phone");
+
+                // Create an array of data for each row
+                Object[] rowData = {id, username, email, password, phone};
+
+                // Add the row to the table model
+                tableModel.addRow(rowData);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -40,17 +79,17 @@ public class UserListJFrame extends javax.swing.JFrame {
 
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Username", "Email", "Password", "Phone"
+                "Id", "Username", "Email", "Password", "Phone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -63,6 +102,7 @@ public class UserListJFrame extends javax.swing.JFrame {
             usersTable.getColumnModel().getColumn(1).setResizable(false);
             usersTable.getColumnModel().getColumn(2).setResizable(false);
             usersTable.getColumnModel().getColumn(3).setResizable(false);
+            usersTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -136,19 +176,47 @@ public class UserListJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+        setVisible(false);
+        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = usersTable.getSelectedRow();
+        int idToUpdate = (int) usersTable.getValueAt(selectedRow, 0);
+
+        setVisible(false);
+        UpdateUserJFrame frame = new UpdateUserJFrame(idToUpdate);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_updateActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        AddUserJFrame frame = new AddUserJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_addActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = usersTable.getSelectedRow();
+        int idToDelete = (int) usersTable.getValueAt(selectedRow, 0);
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM Users WHERE Id = ?");
+            statement.setInt(1, idToDelete);
+            statement.executeUpdate();
+            statement.close();
+
+            // Remove the row from the table model
+            DefaultTableModel model = (DefaultTableModel) usersTable.getModel();
+            model.removeRow(selectedRow);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_deleteActionPerformed
 
     /**

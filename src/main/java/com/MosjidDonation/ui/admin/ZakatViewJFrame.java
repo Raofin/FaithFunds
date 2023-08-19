@@ -4,17 +4,74 @@
  */
 package com.MosjidDonation.ui.admin;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Raofin
  */
-public class DistributeZakatJFrame extends javax.swing.JFrame {
+public class ZakatViewJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form AdminDistributeZakatJFrame
+     * Creates new form AdminViewZakatJFrame
      */
-    public DistributeZakatJFrame() {
+    public ZakatViewJFrame() {
         initComponents();
+        fetchAndPopulateData();
+    }
+
+    private void fetchAndPopulateData() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT "
+                    + "   Zakat.Id, "
+                    + "   (SELECT Username FROM Users WHERE Id = Zakat.UserId) AS Username, "
+                    + "   Zakat.Amount, "
+                    + "   (SELECT Name FROM Mosque WHERE Id = Zakat.MosqueId) AS MosqueName, "
+                    + "   Zakat.Date AS ZakatDate, "
+                    + "   (SELECT Username FROM Admin WHERE Id = Distribution.DistributedBy) AS AdminUsername, "
+                    + "   Zakat.DistributionId "
+                    + "FROM Zakat "
+                    + "LEFT JOIN Distribution ON Zakat.DistributionId = Distribution.Id"
+            );
+
+            DefaultTableModel tableModel = (DefaultTableModel) zakatTable.getModel();
+            tableModel.setRowCount(0); // Clear existing data in the table
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String username = resultSet.getString("Username");
+                double amount = resultSet.getDouble("Amount");
+                String mosqueName = resultSet.getString("MosqueName");
+                String zakatDate = resultSet.getString("ZakatDate"); // Use Zakat.Date
+                String adminUsername = resultSet.getString("AdminUsername");
+
+                // Create an array of data for each row
+                Object[] rowData = {
+                    id,
+                    username,
+                    amount,
+                    mosqueName,
+                    zakatDate, // Use Zakat.Date
+                    adminUsername == null ? "-" : adminUsername
+                };
+                
+                // Add the row to the table model
+                tableModel.addRow(rowData);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -28,28 +85,26 @@ public class DistributeZakatJFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         zakatTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
-        distributeSelected = new javax.swing.JButton();
-        distributeAll = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Distribute Zakat");
+        jLabel2.setText("Zakat List");
 
         zakatTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "User", "Amount", "Mosque", "Date", "Distributed By"
+                "Id", "User", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -57,28 +112,20 @@ public class DistributeZakatJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(zakatTable);
+        if (zakatTable.getColumnModel().getColumnCount() > 0) {
+            zakatTable.getColumnModel().getColumn(0).setResizable(false);
+            zakatTable.getColumnModel().getColumn(1).setResizable(false);
+            zakatTable.getColumnModel().getColumn(2).setResizable(false);
+            zakatTable.getColumnModel().getColumn(3).setResizable(false);
+            zakatTable.getColumnModel().getColumn(4).setResizable(false);
+            zakatTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
-            }
-        });
-
-        distributeSelected.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        distributeSelected.setText("Distribute Selected");
-        distributeSelected.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                distributeSelectedActionPerformed(evt);
-            }
-        });
-
-        distributeAll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        distributeAll.setText("Distribute All");
-        distributeAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                distributeAllActionPerformed(evt);
             }
         });
 
@@ -91,14 +138,8 @@ public class DistributeZakatJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(back)
-                        .addGap(29, 29, 29)
-                        .addComponent(distributeSelected)
-                        .addGap(28, 28, 28)
-                        .addComponent(distributeAll)
-                        .addGap(106, 106, 106)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                    .addComponent(back))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,28 +148,20 @@ public class DistributeZakatJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(back)
-                    .addComponent(distributeSelected)
-                    .addComponent(distributeAll))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(back)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-       
+        setVisible(false);
+        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
-
-    private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_distributeSelectedActionPerformed
-
-    private void distributeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeAllActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_distributeAllActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,29 +180,29 @@ public class DistributeZakatJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatViewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatViewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatViewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DistributeZakatJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatViewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DistributeZakatJFrame().setVisible(true);
+                new ZakatViewJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back;
-    private javax.swing.JButton distributeAll;
-    private javax.swing.JButton distributeSelected;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable zakatTable;

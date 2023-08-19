@@ -9,54 +9,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Raofin
  */
-public class UpdateUserJFrame extends javax.swing.JFrame {
-
-    private int userId;
+public class AddAdminJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form UpdateUserJFrame
+     * Creates new form AddAdminJFrame
      */
-    public UpdateUserJFrame() {
+    public AddAdminJFrame() {
         initComponents();
-    }
-
-    public UpdateUserJFrame(int id) {
-        initComponents();
-        fetchAndPopulateData(id);
-        userId = id;
-    }
-
-    private void fetchAndPopulateData(int userId) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users WHERE Id = ?");
-            preparedStatement.setInt(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String usernameText = resultSet.getString("Username");
-                String emailText = resultSet.getString("Email");
-                String passwordText = resultSet.getString("Password");
-                String phoneText = resultSet.getString("Phone");
-
-                // Update the text fields with the fetched data
-                username.setText(usernameText);
-                email.setText(emailText);
-                password.setText(passwordText);
-                phone.setText(phoneText);
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -66,6 +32,10 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        email = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        add = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         clear = new javax.swing.JButton();
         phone = new javax.swing.JTextField();
@@ -75,12 +45,24 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
         back = new javax.swing.JButton();
         username = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        email = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        update = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        email.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Email");
+
+        add.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        add.setText("Add");
+        add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Password");
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat3.png")); // NOI18N
 
@@ -98,7 +80,7 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Update User");
+        jLabel2.setText("New Admin");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Phone");
@@ -116,28 +98,12 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Username");
 
-        email.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Email");
-
-        update.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        update.setText("Update");
-        update.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Password");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,7 +134,7 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(clear)
                         .addGap(18, 18, 18)
-                        .addComponent(update)
+                        .addComponent(add)
                         .addGap(27, 27, 27)))
                 .addGap(43, 43, 43))
         );
@@ -197,17 +163,99 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(update)
+                            .addComponent(add)
                             .addComponent(back)
                             .addComponent(clear)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addComponent(jLabel1)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        String usernameText = username.getText();
+        String emailText = email.getText();
+        String passwordText = new String(password.getPassword());
+        String phoneText = phone.getText();
+
+        // Validate non-empty fields
+        if (usernameText.isEmpty() || emailText.isEmpty() || passwordText.isEmpty() || phoneText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Stop further execution as the fields are not valid
+        }
+
+        // Validate username length
+        if (usernameText.length() < 4) {
+            JOptionPane.showMessageDialog(null, "Username should be at least 4 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password length
+        if (passwordText.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 6 characters long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate phone number length
+        if (phoneText.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Phone number should be at least 8 digits long.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email format using a regular expression
+        String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$";
+        if (!emailText.matches(emailPattern)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Check if the email is already registered
+            String emailCheckQuery = "SELECT COUNT(*) FROM Admin WHERE Email = ?";
+            PreparedStatement emailCheckStatement = connection.prepareStatement(emailCheckQuery);
+            emailCheckStatement.setString(1, emailText);
+
+            ResultSet emailCheckResult = emailCheckStatement.executeQuery();
+            emailCheckResult.next();
+
+            int emailCount = emailCheckResult.getInt(1);
+
+            emailCheckResult.close();
+            emailCheckStatement.close();
+
+            if (emailCount > 0) {
+                JOptionPane.showMessageDialog(null, "This email address is already registered.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Create a prepared statement for user registration
+            String insertQuery = "INSERT INTO Admin (Username, Email, Password, Phone) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, usernameText);
+            preparedStatement.setString(2, emailText);
+            preparedStatement.setString(3, passwordText);
+            preparedStatement.setString(4, phoneText);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            // Registration successful, show message and clear input fields
+            JOptionPane.showMessageDialog(null, "New admin added.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            username.setText("");
+            email.setText("");
+            password.setText("");
+            phone.setText("");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_addActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         username.setText("");
@@ -218,47 +266,10 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
-        AdminDashboardJFrame frame = new AdminDashboardJFrame();
+        AdminListJFrame frame = new AdminListJFrame();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
-
-    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        String newUsername = username.getText();
-        String newEmail = email.getText();
-        String newPassword = new String(password.getPassword());
-        String newPhone = phone.getText();
-
-        if (newUsername.isEmpty() || newEmail.isEmpty() || newPassword.isEmpty() || newPhone.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE Users SET Username = ?, Email = ?, Password = ?, Phone = ? WHERE Id = ?"
-            );
-            preparedStatement.setString(1, newUsername);
-            preparedStatement.setString(2, newEmail);
-            preparedStatement.setString(3, newPassword);
-            preparedStatement.setString(4, newPhone);
-            preparedStatement.setInt(5, userId);
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "User information updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Failed to update user information.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-            preparedStatement.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "An error occurred. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_updateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,28 +288,26 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UpdateUserJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddAdminJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UpdateUserJFrame().setVisible(true);
+                new AddAdminJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add;
     private javax.swing.JButton back;
     private javax.swing.JButton clear;
     private javax.swing.JTextField email;
@@ -310,7 +319,6 @@ public class UpdateUserJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField phone;
-    private javax.swing.JButton update;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

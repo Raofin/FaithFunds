@@ -47,6 +47,11 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
 
         viewDonations.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         viewDonations.setText("Donations");
+        viewDonations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewDonationsActionPerformed(evt);
+            }
+        });
 
         viewZakat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         viewZakat.setText("Zakat");
@@ -64,6 +69,11 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
 
         distributeDonations.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         distributeDonations.setText("Donations");
+        distributeDonations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                distributeDonationsActionPerformed(evt);
+            }
+        });
 
         distributeZakat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         distributeZakat.setText("Zakat");
@@ -78,6 +88,11 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
 
         manageAdmins.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         manageAdmins.setText("Admins");
+        manageAdmins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageAdminsActionPerformed(evt);
+            }
+        });
 
         manageUsers.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         manageUsers.setText("Users");
@@ -165,16 +180,46 @@ public class AdminDashboardJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void viewZakatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewZakatActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        ZakatViewJFrame frame = new ZakatViewJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_viewZakatActionPerformed
 
     private void distributeZakatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeZakatActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        ZakatDistributeJFrame frame = new ZakatDistributeJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_distributeZakatActionPerformed
 
     private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUsersActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        UserListJFrame frame = new UserListJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }//GEN-LAST:event_manageUsersActionPerformed
+
+    private void viewDonationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDonationsActionPerformed
+        setVisible(false);
+        DonationViewJFrame frame = new DonationViewJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_viewDonationsActionPerformed
+
+    private void distributeDonationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeDonationsActionPerformed
+        setVisible(false);
+        DonationDistributeJFrame frame = new DonationDistributeJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_distributeDonationsActionPerformed
+
+    private void manageAdminsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageAdminsActionPerformed
+        setVisible(false);
+        AdminListJFrame frame = new AdminListJFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_manageAdminsActionPerformed
 
     /**
      * @param args the command line arguments

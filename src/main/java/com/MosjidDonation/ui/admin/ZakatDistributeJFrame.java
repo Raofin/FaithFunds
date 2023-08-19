@@ -8,12 +8,12 @@ package com.MosjidDonation.ui.admin;
  *
  * @author Raofin
  */
-public class ListJFrame extends javax.swing.JFrame {
+public class ZakatDistributeJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form AdminListJFrame
+     * Creates new form AdminDistributeZakatJFrame
      */
-    public ListJFrame() {
+    public ZakatDistributeJFrame() {
         initComponents();
     }
 
@@ -26,38 +26,37 @@ public class ListJFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        adminTable = new javax.swing.JTable();
+        zakatTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
-        update = new javax.swing.JButton();
-        add = new javax.swing.JButton();
-        delete = new javax.swing.JButton();
+        distributeSelected = new javax.swing.JButton();
+        distributeAll = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Admin List");
+        jLabel2.setText("Distribute Zakat");
 
-        adminTable.setModel(new javax.swing.table.DefaultTableModel(
+        zakatTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Username", "Email", "Password", "Phone"
+                "User", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(adminTable);
+        jScrollPane1.setViewportView(zakatTable);
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");
@@ -67,27 +66,19 @@ public class ListJFrame extends javax.swing.JFrame {
             }
         });
 
-        update.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        update.setText("Update");
-        update.addActionListener(new java.awt.event.ActionListener() {
+        distributeSelected.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        distributeSelected.setText("Distribute Selected");
+        distributeSelected.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateActionPerformed(evt);
+                distributeSelectedActionPerformed(evt);
             }
         });
 
-        add.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        add.setText("Add");
-        add.addActionListener(new java.awt.event.ActionListener() {
+        distributeAll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        distributeAll.setText("Distribute All");
+        distributeAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addActionPerformed(evt);
-            }
-        });
-
-        delete.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        delete.setText("Delete");
-        delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteActionPerformed(evt);
+                distributeAllActionPerformed(evt);
             }
         });
 
@@ -100,15 +91,14 @@ public class ListJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(back)
                         .addGap(29, 29, 29)
-                        .addComponent(update)
-                        .addGap(24, 24, 24)
-                        .addComponent(delete)
-                        .addGap(24, 24, 24)
-                        .addComponent(add)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                        .addComponent(distributeSelected)
+                        .addGap(28, 28, 28)
+                        .addComponent(distributeAll)
+                        .addGap(106, 106, 106)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,13 +107,12 @@ public class ListJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(back)
-                    .addComponent(update)
-                    .addComponent(add)
-                    .addComponent(delete))
-                .addContainerGap(44, Short.MAX_VALUE))
+                    .addComponent(distributeSelected)
+                    .addComponent(distributeAll))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
@@ -133,17 +122,13 @@ public class ListJFrame extends javax.swing.JFrame {
        
     }//GEN-LAST:event_backActionPerformed
 
-    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+    private void distributeSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeSelectedActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_updateActionPerformed
+    }//GEN-LAST:event_distributeSelectedActionPerformed
 
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+    private void distributeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributeAllActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addActionPerformed
-
-    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteActionPerformed
+    }//GEN-LAST:event_distributeAllActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,32 +147,33 @@ public class ListJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZakatDistributeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListJFrame().setVisible(true);
+                new ZakatDistributeJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add;
-    private javax.swing.JTable adminTable;
     private javax.swing.JButton back;
-    private javax.swing.JButton delete;
+    private javax.swing.JButton distributeAll;
+    private javax.swing.JButton distributeSelected;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton update;
+    private javax.swing.JTable zakatTable;
     // End of variables declaration//GEN-END:variables
 }

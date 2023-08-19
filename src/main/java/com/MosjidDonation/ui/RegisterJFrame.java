@@ -262,6 +262,13 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
+
+            // Registration successful, show message and clear input fields
+            JOptionPane.showMessageDialog(null, "Registration successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            username.setText("");
+            email.setText("");
+            password.setText("");
+            phone.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);

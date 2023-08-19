@@ -4,6 +4,13 @@
  */
 package com.MosjidDonation.ui.admin;
 
+import com.MosjidDonation.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Raofin
@@ -15,6 +22,58 @@ public class DonationViewJFrame extends javax.swing.JFrame {
      */
     public DonationViewJFrame() {
         initComponents();
+        fetchAndPopulateData();
+    }
+
+    private void fetchAndPopulateData() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT "
+                    + "   Donation.Id, "
+                    + "   (SELECT Username FROM Users WHERE Id = Donation.UserId) AS Username, "
+                    + "   Donation.Category, "
+                    + "   Donation.Amount, "
+                    + "   (SELECT Name FROM Mosque WHERE Id = Donation.MosqueId) AS MosqueName, "
+                    + "   Donation.Date AS DonationDate, "
+                    + "   (SELECT Username FROM Admin WHERE Id = Donation.DistributionId) AS AdminUsername "
+                    + "FROM Donation "
+                    + "LEFT JOIN Distribution ON Donation.DistributionId = Distribution.Id"
+            );
+
+            DefaultTableModel tableModel = (DefaultTableModel) donationListTable.getModel();
+            tableModel.setRowCount(0); // Clear existing data in the table
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String username = resultSet.getString("Username");
+                String category = resultSet.getString("Category");
+                double amount = resultSet.getDouble("Amount");
+                String mosqueName = resultSet.getString("MosqueName");
+                String donationDate = resultSet.getString("DonationDate");
+                String adminUsername = resultSet.getString("AdminUsername");
+
+                // Create an array of data for each row
+                Object[] rowData = {
+                    id,
+                    username,
+                    category,
+                    amount,
+                    mosqueName,
+                    donationDate,
+                    adminUsername == null ? "-" : adminUsername
+                };
+
+                // Add the row to the table model
+                tableModel.addRow(rowData);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -26,7 +85,7 @@ public class DonationViewJFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        donationListTable = new javax.swing.JTable();
         back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -35,31 +94,34 @@ public class DonationViewJFrame extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Donation List");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        donationListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "User", "Category", "Amount", "Mosque", "Date", "Distributed By"
+                "Id", "User", "Category", "Amount", "Mosque", "Date", "Distributed By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane1.setViewportView(donationListTable);
+        if (donationListTable.getColumnModel().getColumnCount() > 0) {
+            donationListTable.getColumnModel().getColumn(0).setResizable(false);
+            donationListTable.getColumnModel().getColumn(1).setResizable(false);
+            donationListTable.getColumnModel().getColumn(2).setResizable(false);
+            donationListTable.getColumnModel().getColumn(3).setResizable(false);
+            donationListTable.getColumnModel().getColumn(4).setResizable(false);
+            donationListTable.getColumnModel().getColumn(5).setResizable(false);
+            donationListTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -98,7 +160,7 @@ public class DonationViewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        
+
     }//GEN-LAST:event_backActionPerformed
 
     /**
@@ -139,8 +201,8 @@ public class DonationViewJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back;
+    private javax.swing.JTable donationListTable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
