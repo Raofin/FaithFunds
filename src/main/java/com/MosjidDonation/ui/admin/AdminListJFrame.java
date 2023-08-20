@@ -81,17 +81,17 @@ public class AdminListJFrame extends javax.swing.JFrame {
 
         adminTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Username", "Email", "Password", "Phone"
+                "Id", "Username", "Email", "Password", "Phone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -99,6 +99,13 @@ public class AdminListJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(adminTable);
+        if (adminTable.getColumnModel().getColumnCount() > 0) {
+            adminTable.getColumnModel().getColumn(0).setResizable(false);
+            adminTable.getColumnModel().getColumn(1).setResizable(false);
+            adminTable.getColumnModel().getColumn(2).setResizable(false);
+            adminTable.getColumnModel().getColumn(3).setResizable(false);
+            adminTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         back.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         back.setText("Back");

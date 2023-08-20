@@ -67,7 +67,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Role");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\My Codes\\zakat.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\com\\MosjidDonation\\img\\img1.png"));
 
         roleComboBox.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
@@ -121,11 +121,12 @@ public class RegisterJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jLabel1)
+                .addGap(65, 65, 65)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -144,27 +145,26 @@ public class RegisterJFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(68, 68, 68)
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
                         .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(68, 68, 68)
                         .addComponent(back)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(clear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(register))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(registrationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(registrationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(registrationLabel)
                         .addGap(18, 18, 18)
@@ -191,9 +191,8 @@ public class RegisterJFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(register)
                             .addComponent(back)
-                            .addComponent(clear)))
-                    .addComponent(jLabel1))
-                .addContainerGap(54, Short.MAX_VALUE))
+                            .addComponent(clear))))
+                .addGap(58, 58, 58))
         );
 
         pack();
@@ -246,8 +245,13 @@ public class RegisterJFrame extends javax.swing.JFrame {
         try {
             Connection connection = DatabaseConnection.getConnection();
 
-            // Check if the email is already registered
             String emailCheckQuery = "SELECT COUNT(*) FROM Users WHERE Email = ?";
+
+            if ("Admin".equals(roleComboBox.getSelectedItem())) {
+                emailCheckQuery = "SELECT COUNT(*) FROM Admin WHERE Email = ?";
+            }
+
+            // Check if the email is already registered
             PreparedStatement emailCheckStatement = connection.prepareStatement(emailCheckQuery);
             emailCheckStatement.setString(1, emailText);
 
