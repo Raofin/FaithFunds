@@ -1,11 +1,12 @@
+-- Switch to the master database to create a new database
 USE master;
 
--- Create the database
-CREATE DATABASE MosjidDonation;
+-- Create a new database named database
+CREATE DATABASE FaithFunds;
 GO
 
--- Use the newly created database
-USE MosjidDonation;
+-- Switch to the newly created database
+USE FaithFunds;
 GO
 
 -- Create Users table
